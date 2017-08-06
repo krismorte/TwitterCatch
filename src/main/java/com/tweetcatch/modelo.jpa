@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings jaxb-support="false" id="_150188380205572" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" xmlns:ns4="http://nbmodeler.java.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <jpa:mapped-superclass class="Identity" compositePrimaryKeyType="NONE" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_150188380208275">
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.String" visibile="true" id="_150188380208276"/>
+        </jpa:attributes>
+    </jpa:mapped-superclass>
+    <jpa:mapped-superclass class="IdentityAndAudit" compositePrimaryKeyType="NONE" jaxb-root-element="false" static-metamodel="false" visibile="true" minimized="false" id="_150188380210780">
+        <jpa:attributes>
+            <jpa:id name="id" attribute-type="java.lang.String" visibile="true" id="_150188380210781"/>
+            <jpa:basic name="createTime" attribute-type="java.time.LocalDateTime" visibile="true" id="_150188380210782"/>
+            <jpa:basic name="updateTime" attribute-type="java.time.LocalDateTime" visibile="true" id="_150188380210783"/>
+            <jpa:basic name="active" attribute-type="boolean" visibile="true" id="_150188380210784"/>
+        </jpa:attributes>
+    </jpa:mapped-superclass>
+    <jpa:entity class="BannedHashTag" compositePrimaryKeyType="NONE" jaxb-root-element="false" static-metamodel="false" superclassId="_150188380208275" visibile="true" minimized="false" id="_150188380208277">
+        <jpa:table name="banned_hashtag"/>
+        <jpa:attributes>
+            <jpa:basic name="hashtagText" attribute-type="java.lang.String" visibile="true" id="_150188380208278">
+                <jpa:column unique="false" nullable="true" insertable="true" updatable="true" length="150"/>
+            </jpa:basic>
+            <jpa:basic name="profileBlockedName" attribute-type="java.lang.String" visibile="true" id="_150188380208279">
+                <jpa:column unique="false" nullable="true" insertable="true" updatable="true" length="150"/>
+            </jpa:basic>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="BlackList" compositePrimaryKeyType="NONE" jaxb-root-element="false" static-metamodel="false" superclassId="_150188380210780" visibile="true" minimized="false" id="_150188380210785">
+        <jpa:table name="black_list"/>
+        <jpa:attributes>
+            <jpa:basic name="profileBlockedId" attribute-type="java.lang.Long" visibile="true" id="_150188380210787"/>
+            <jpa:basic name="profileBlockedName" attribute-type="java.lang.String" visibile="true" id="_150188380210788">
+                <jpa:column unique="false" nullable="true" insertable="true" updatable="true" length="150"/>
+            </jpa:basic>
+            <jpa:basic name="tweetCount" attribute-type="java.lang.Long" visibile="true" id="_150188380210789"/>
+            <jpa:one-to-one name="twitterAccount" target-entity="TwitterAccount" primaryKey="false" connected-entity-id="_1501883802189109" visibile="true" id="_150188380210786"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="ExecutionHistory" compositePrimaryKeyType="NONE" jaxb-root-element="false" static-metamodel="false" superclassId="_150188380208275" visibile="true" minimized="false" id="_150188380212890">
+        <jpa:table name="execution_history"/>
+        <jpa:attributes>
+            <jpa:basic name="runTime" attribute-type="java.time.LocalDateTime" visibile="true" id="_150188380212891"/>
+            <jpa:basic name="totalTweets" attribute-type="java.lang.Integer" visibile="true" id="_150188380212892"/>
+            <jpa:basic name="totalMencoes" attribute-type="java.lang.Integer" visibile="true" id="_150188380212893"/>
+            <jpa:basic name="totalTweetTL" attribute-type="java.lang.Integer" visibile="true" id="_150188380212894"/>
+            <jpa:one-to-one name="twitterAccount" target-entity="TwitterAccount" primaryKey="false" connected-entity-id="_1501883802189109" visibile="true" id="_150188380212895"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="HashTag" compositePrimaryKeyType="NONE" jaxb-root-element="false" static-metamodel="false" superclassId="_150188380210780" visibile="true" minimized="false" id="_150188380214796">
+        <jpa:table name="hashtag"/>
+        <jpa:attributes>
+            <jpa:basic name="hashtagText" attribute-type="java.lang.String" visibile="true" id="_150188380214797">
+                <jpa:column unique="false" nullable="true" insertable="true" updatable="true" length="150"/>
+            </jpa:basic>
+            <jpa:basic name="tweetCount" attribute-type="java.lang.Long" visibile="true" id="_1501883802147100"/>
+            <jpa:one-to-one name="twitterAccount" target-entity="TwitterAccount" primaryKey="false" connected-entity-id="_1501883802189109" visibile="true" id="_150188380214798"/>
+            <jpa:one-to-one name="blackList" target-entity="BlackList" primaryKey="false" connected-entity-id="_150188380210785" visibile="true" id="_150188380214799"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="TweetSave" compositePrimaryKeyType="NONE" jaxb-root-element="false" static-metamodel="false" superclassId="_150188380208275" visibile="true" minimized="false" id="_1501883802169101">
+        <jpa:table name="tweet_save"/>
+        <jpa:attributes>
+            <jpa:id name="tweetId" attribute-type="java.lang.Long" visibile="true" id="_1501883802169102"/>
+            <jpa:basic name="tweetText" attribute-type="java.lang.String" visibile="true" id="_1501883802169103">
+                <jpa:column unique="false" nullable="true" insertable="true" updatable="true" length="200"/>
+            </jpa:basic>
+            <jpa:basic name="userName" attribute-type="java.lang.String" visibile="true" id="_1501883802169104">
+                <jpa:column unique="false" nullable="true" insertable="true" updatable="true" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="createDate" attribute-type="java.time.LocalDate" visibile="true" id="_1501883802169105"/>
+            <jpa:basic name="saveDate" attribute-type="java.time.LocalDate" visibile="true" id="_1501883802169108"/>
+            <jpa:one-to-one name="executionHistory" target-entity="ExecutionHistory" primaryKey="false" connected-entity-id="_150188380212890" visibile="true" id="_1501883802169106"/>
+            <jpa:one-to-one name="twitterAccount" target-entity="TwitterAccount" primaryKey="false" connected-entity-id="_1501883802189109" visibile="true" id="_1501883802169107"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="TwitterAccount" compositePrimaryKeyType="NONE" jaxb-root-element="false" static-metamodel="false" superclassId="_150188380210780" visibile="true" minimized="false" id="_1501883802189109">
+        <jpa:table name="twitter_account"/>
+        <jpa:attributes>
+            <jpa:basic name="profileName" attribute-type="java.lang.String" visibile="true" id="_1501883802189110">
+                <jpa:column unique="false" nullable="true" insertable="true" updatable="true" length="40"/>
+            </jpa:basic>
+            <jpa:basic name="email" attribute-type="java.lang.String" visibile="true" id="_1501883802189111">
+                <jpa:column unique="false" nullable="true" insertable="true" updatable="true" length="150"/>
+            </jpa:basic>
+            <jpa:basic name="consumerKey" attribute-type="java.lang.String" visibile="true" id="_1501883802189112"/>
+            <jpa:basic name="accessToken" attribute-type="java.lang.String" visibile="true" id="_1501883802189113"/>
+            <jpa:basic name="consumerSecret" attribute-type="java.lang.String" visibile="true" id="_1501883802189114"/>
+            <jpa:basic name="accessTokenSecret" attribute-type="java.lang.String" visibile="true" id="_1501883802189115"/>
+            <jpa:one-to-many name="twitterQueries" target-entity="TwitterQuery" mapped-by="twitterAccount" collection-type="java.util.List" connected-entity-id="_1501883802209117" connected-attribute-id="_1501883802209121" visibile="true" id="_1501883802189116"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="TwitterQuery" compositePrimaryKeyType="NONE" jaxb-root-element="false" static-metamodel="false" superclassId="_150188380210780" visibile="true" minimized="false" id="_1501883802209117">
+        <jpa:table name="twitter_query"/>
+        <jpa:attributes>
+            <jpa:basic name="restrictions" attribute-type="java.lang.String" visibile="true" id="_1501883802209118">
+                <jpa:column unique="false" nullable="true" insertable="true" updatable="true" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="languages" attribute-type="java.lang.String" visibile="true" id="_1501883802209119">
+                <jpa:column unique="false" nullable="true" insertable="true" updatable="true" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="queryString" attribute-type="java.lang.String" visibile="true" id="_1501883802209120">
+                <jpa:column unique="false" nullable="true" insertable="true" updatable="true" length="400"/>
+            </jpa:basic>
+            <jpa:many-to-one name="twitterAccount" target-entity="TwitterAccount" primaryKey="false" connected-entity-id="_1501883802189109" connected-attribute-id="_1501883802189116" visibile="true" id="_1501883802209121"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:diagram id="_150188380205573">
+        <plane elementRef="_150188380205572" id="_150188380205574_p">
+            <shape elementRef="_150188380208277" id="_150188380208277_gui">
+                <Bounds x="873.0" y="710.0" width="189.0" height="79.0"/>
+            </shape>
+            <shape elementRef="_150188380210785" id="_150188380210785_gui">
+                <Bounds x="1087.0" y="108.0" width="162.0" height="134.0"/>
+            </shape>
+            <shape elementRef="_150188380212890" id="_150188380212890_gui">
+                <Bounds x="32.0" y="567.0" width="192.0" height="155.0"/>
+            </shape>
+            <shape elementRef="_150188380214796" id="_150188380214796_gui">
+                <Bounds x="535.0" y="32.0" width="146.0" height="134.0"/>
+            </shape>
+            <shape elementRef="_1501883802169101" id="_1501883802169101_gui">
+                <Bounds x="32.0" y="32.0" width="159.0" height="210.0"/>
+            </shape>
+            <shape elementRef="_1501883802189109" id="_1501883802189109_gui">
+                <Bounds x="288.0" y="306.0" width="183.0" height="197.0"/>
+            </shape>
+            <shape elementRef="_1501883802209117" id="_1501883802209117_gui">
+                <Bounds x="659.0" y="433.0" width="170.0" height="134.0"/>
+            </shape>
+            <shape elementRef="_150188380208275" id="_150188380208275_gui">
+                <Bounds x="398.0" y="758.0" width="137.0" height="58.0"/>
+            </shape>
+            <shape elementRef="_150188380210780" id="_150188380210780_gui">
+                <Bounds x="1289.0" y="503.0" width="188.0" height="134.0"/>
+            </shape>
+        </plane>
+    </jpa:diagram>
+</jpa:entity-mappings>
