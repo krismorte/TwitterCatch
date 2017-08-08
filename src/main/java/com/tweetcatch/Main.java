@@ -8,25 +8,24 @@ package com.tweetcatch;
 import com.alee.laf.WebLookAndFeel;
 import com.tweetcatch.model.TwitterAccount;
 import com.tweetcatch.repository.TwitterAccountRepository;
+import com.tweetcatch.service.ProxyService;
 import com.tweetcatch.view.swing.MainScreen;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
 
 /**
  *
  * @author krisnamourtscf
  */
 public class Main {
-    
-    private void startSwingGUI(){
-        
+
+    private void startSwingGUI() {
+
         try {
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             WebLookAndFeel.install();
 
-        /*} catch (ClassNotFoundException ex) {
+            /*} catch (ClassNotFoundException ex) {
             Logger.getLogger(ContaClaro.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
             Logger.getLogger(ContaClaro.class.getName()).log(Level.SEVERE, null, ex);
@@ -37,28 +36,30 @@ public class Main {
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+        ProxyService.configure();
+
         MainScreen screen = new MainScreen();
         screen.setLocationRelativeTo(null);
         screen.setVisible(true);
     }
-    
-    private void startJavaFXGUI(){
-        
+
+    private void startJavaFXGUI() {
+
     }
-    
-    private void teste(){
+
+    private void teste() {
         TwitterAccountRepository repository = new TwitterAccountRepository();
         TwitterAccount account = new TwitterAccount();
         account.setProfileName("teste");
         repository.persist(account);
     }
-    
+
     public static void main(String[] args) {
         Main mainClass = new Main();
         //mainClass.teste();
         mainClass.startSwingGUI();
-        
+
     }
-    
+
 }

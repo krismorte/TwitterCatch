@@ -6,17 +6,18 @@
 package com.tweetcatch.view.swing;
 
 import com.tweetcatch.model.TwitterAccount;
-import com.tweetcatch.repository.TwitterAccountRepository;
 import com.tweetcatch.service.TwitterAccountService;
+import com.tweetcatch.view.util.ScreenUtil;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author c007329
  */
-public class ManagerAccount extends javax.swing.JDialog {
+public class ManagerAccount extends javax.swing.JDialog{
 
     private TwitterAccountService twitterAccountService = new TwitterAccountService();
+    private ScreenUtil screenUtil = new ScreenUtil();
 
     /**
      * Creates new form ManagerAccount
@@ -24,7 +25,7 @@ public class ManagerAccount extends javax.swing.JDialog {
     public ManagerAccount(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/image/if_twittert_278410.png")).getImage());
+        setIconImage(screenUtil.getImage("/image/if_twittert_278410.png"));
     }
 
     /**
@@ -218,6 +219,8 @@ public class ManagerAccount extends javax.swing.JDialog {
         account.setConsumerSecret(txtConsumerSecret.getText());
         try {
             twitterAccountService.save(account);
+            JOptionPane.showMessageDialog(rootPane, "Saved successfully");
+            screenUtil.clearSwing(this);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
@@ -225,13 +228,13 @@ public class ManagerAccount extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalveActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-       
-            if(twitterAccountService.testConnection(txtConsumerKey.getText(), txtConsumerSecret.getText(), txtAccessToken.getText(), txtAccessTokenSecret.getText())){
-                JOptionPane.showMessageDialog(rootPane, "Connection Success!");
-            }else{
-                JOptionPane.showMessageDialog(rootPane, "Connection Fail!");
-            }                   
-            
+
+        if (twitterAccountService.testConnection(txtConsumerKey.getText(), txtConsumerSecret.getText(), txtAccessToken.getText(), txtAccessTokenSecret.getText())) {
+            JOptionPane.showMessageDialog(rootPane, "Connection Success!");
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Connection Fail!");
+        }
+
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
@@ -296,4 +299,5 @@ public class ManagerAccount extends javax.swing.JDialog {
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtProfile;
     // End of variables declaration//GEN-END:variables
+
 }

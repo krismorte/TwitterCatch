@@ -6,24 +6,13 @@
 package com.tweetcatch.model;
 
 import com.krismorte.simplerepository.identity.IdentityAndAudit;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import twitter4j.GeoLocation;
-import twitter4j.HashtagEntity;
-import twitter4j.MediaEntity;
-import twitter4j.Place;
-import twitter4j.RateLimitStatus;
-import twitter4j.Scopes;
 import twitter4j.Status;
-import twitter4j.SymbolEntity;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
-import twitter4j.URLEntity;
-import twitter4j.User;
-import twitter4j.UserMentionEntity;
 import twitter4j.conf.ConfigurationBuilder;
 
 /**

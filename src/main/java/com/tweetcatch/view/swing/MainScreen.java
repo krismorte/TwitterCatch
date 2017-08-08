@@ -5,18 +5,22 @@
  */
 package com.tweetcatch.view.swing;
 
+import com.tweetcatch.view.util.ScreenUtil;
+
 /**
  *
  * @author c007329
  */
 public class MainScreen extends javax.swing.JFrame {
 
+    private ScreenUtil screenUtil = new ScreenUtil();
+    
     /**
      * Creates new form NewJFrame
      */
     public MainScreen() {
-        initComponents();
-        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/image/if_Twitter_1298770.png")).getImage());
+        initComponents();        
+        setIconImage(screenUtil.getImage("/image/if_Twitter_1298770.png"));
     }
 
     /**
@@ -36,6 +40,7 @@ public class MainScreen extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        btnProxy = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tweet Catch");
@@ -73,6 +78,14 @@ public class MainScreen extends javax.swing.JFrame {
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/if_web_internet_twitter_2398108.png"))); // NOI18N
         jButton7.setToolTipText("Lista Negra");
 
+        btnProxy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/if_social-media_web_1873909.png"))); // NOI18N
+        btnProxy.setToolTipText("configure proxy");
+        btnProxy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProxyActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -90,7 +103,9 @@ public class MainScreen extends javax.swing.JFrame {
                 .addComponent(jButton6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 243, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
+                .addComponent(btnProxy, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAccount)
                 .addContainerGap())
         );
@@ -98,14 +113,15 @@ public class MainScreen extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton7)
-                    .addComponent(jButton6)
-                    .addComponent(jButton5)
-                    .addComponent(jButton4)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2)
-                    .addComponent(btnAccount))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnProxy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -140,6 +156,12 @@ public class MainScreen extends javax.swing.JFrame {
         screen.setLocationRelativeTo(null);
         screen.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnProxyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProxyActionPerformed
+        ProxySettings screen = new ProxySettings(this, true);
+        screen.setLocationRelativeTo(null);
+        screen.setVisible(true);
+    }//GEN-LAST:event_btnProxyActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,6 +201,7 @@ public class MainScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAccount;
+    private javax.swing.JButton btnProxy;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

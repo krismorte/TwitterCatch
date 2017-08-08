@@ -15,7 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -28,8 +27,6 @@ public class Schedule extends IdentityAndAudit {
 
     @Column(length = 40)
     private String name;
-    @OneToOne
-    private TwitterAccount twitterAccount;
     private LocalTime startTime;
     private LocalTime finalTime;
     private LocalDateTime singleTime;
@@ -129,20 +126,6 @@ public class Schedule extends IdentityAndAudit {
      */
     public void setIntervalTime(LocalTime intervalTime) {
         this.intervalTime = intervalTime;
-    }
-
-    /**
-     * @return the twitterAccount
-     */
-    public TwitterAccount getTwitterAccount() {
-        return twitterAccount;
-    }
-
-    /**
-     * @param twitterAccount the twitterAccount to set
-     */
-    public void setTwitterAccount(TwitterAccount twitterAccount) {
-        this.twitterAccount = twitterAccount;
     }
 
     /**

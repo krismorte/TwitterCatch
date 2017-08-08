@@ -8,6 +8,7 @@ package com.tweetcatch.repository;
 import com.krismorte.simplerepository.jpa.JpaRepository;
 import com.tweetcatch.model.TweetSave;
 import com.tweetcatch.param.PersistenceContext;
+import java.util.List;
 
 /**
  *
@@ -16,7 +17,12 @@ import com.tweetcatch.param.PersistenceContext;
 public class TweetSaveRepository extends JpaRepository<TweetSave> {
 
     public TweetSaveRepository() {
-        super(TweetSave.class, PersistenceContext.CONTEXT);
+        super(TweetSave.class, PersistenceContext.CONTEXT );
     }
-
+    
+    public List<TweetSave> listByCreateDate(){
+        
+      return null;
+    }
+    
 }

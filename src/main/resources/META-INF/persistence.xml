@@ -3,19 +3,19 @@
     <!--CONEXÃO DE PRODUÇÂO-->
     <persistence-unit name="SQP19DUP999" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <!--<properties>
+        <properties>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2008Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>            
-            <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://s1sqlp19:1433;databaseName=dsup999"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://s1sqlh11:1433;databaseName=dsup999"/>
             <property name="javax.persistence.jdbc.user" value="sa"/>
-            <property name="javax.persistence.jdbc.password" value="s1#sqlp%bdù"/>
-            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>           
-        </properties>-->
+            <property name="javax.persistence.jdbc.password" value="d#@l%2404%sqlhqq"/>
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/> 
+             <property name="hibernate.show_sql" value="true"/>             
+        </properties>
         
-        <properties>
+        <!--<properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://192.168.114.3:5432/contrato"/>-->
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/twitter"/>
             <property name="javax.persistence.jdbc.user" value="postgres"/>
             <property name="javax.persistence.jdbc.password" value="P@$$w0rd"/>
@@ -23,7 +23,7 @@
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="false"/>
-        </properties>
+        </properties>-->
     </persistence-unit>
 
 </persistence>

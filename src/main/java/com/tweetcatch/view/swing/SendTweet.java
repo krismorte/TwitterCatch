@@ -5,10 +5,10 @@
  */
 package com.tweetcatch.view.swing;
 
-import com.tweetcatch.enums.TweetType;
-import com.tweetcatch.model.TweetSave;
 import com.tweetcatch.model.TwitterAccount;
 import com.tweetcatch.service.TweetSaveService;
+import com.tweetcatch.view.util.ScreenUtil;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import javax.swing.JOptionPane;
 
@@ -20,6 +20,7 @@ public class SendTweet extends javax.swing.JDialog {
 
     private TweetSaveService tweetSaveService = new TweetSaveService();
     private Collection<TwitterAccount> twitterAccounts;
+    private ScreenUtil screenUtil = new ScreenUtil();
 
     /**
      * Creates new form ManagerTweet
@@ -27,13 +28,24 @@ public class SendTweet extends javax.swing.JDialog {
     public SendTweet(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/image/if_Twitter_UI-15_2310210.png")).getImage());
+        setIconImage(screenUtil.getImage("/image/if_Twitter_UI-15_2310210.png"));
         initBox();
     }
 
     private void initBox() {
         twitterAccounts = tweetSaveService.getAccounts();
         twitterAccounts.forEach(twitterAccount -> boxAccount.addItem(twitterAccount.getProfileName()));
+    }
+
+    private TwitterAccount getChooseTwitterAccount() {
+        TwitterAccount account = null;
+        for (TwitterAccount a : twitterAccounts) {
+            if (a.getProfileName().equals(boxAccount.getSelectedItem().toString())) {
+                account = a;
+                break;
+            }
+        }
+        return account;
     }
 
     /**
@@ -73,6 +85,11 @@ public class SendTweet extends javax.swing.JDialog {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/if_calendar_1814093 (1).png"))); // NOI18N
         jButton1.setToolTipText("schedule");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -116,20 +133,30 @@ public class SendTweet extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveAndSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveAndSendActionPerformed
-        TwitterAccount account = null;
-        for (TwitterAccount a : twitterAccounts) {
-            if (a.getProfileName().equals(boxAccount.getSelectedItem().toString())) {
-                account = a;
-                break;
-            }
-        }
+        TwitterAccount account = getChooseTwitterAccount();
         try {
             tweetSaveService.sendSimpleTweet(account, txtText.getText());
+            JOptionPane.showMessageDialog(rootPane, "Sended Tweet successfully");
+            screenUtil.clearSwing(this);
         } catch (Exception ex) {
+            ex.printStackTrace();
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
 
     }//GEN-LAST:event_btnSaveAndSendActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        TwitterAccount account = getChooseTwitterAccount();
+        LocalDateTime dateTime = ChooseDateTime.showAndChoose();
+        try {
+            tweetSaveService.saveScheduleTweet(account, dateTime, txtText.getText());
+            JOptionPane.showMessageDialog(rootPane, "Schedule Tweet successfully");
+            screenUtil.clearSwing(this);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -183,4 +210,5 @@ public class SendTweet extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtText;
     // End of variables declaration//GEN-END:variables
+
 }
