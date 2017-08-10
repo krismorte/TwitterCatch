@@ -3,17 +3,6 @@
     <!--CONEXÃO DE PRODUÇÂO-->
     <persistence-unit name="SQP19DUP999" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <!--<properties>
-            <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2008Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>            
-            <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://s1sqlh11:1433;databaseName=dsup999"/>
-            <property name="javax.persistence.jdbc.user" value="sa"/>
-            <property name="javax.persistence.jdbc.password" value="d#@l%2404%sqlhqq"/>
-            <property name="hibernate.enable_lazy_load_no_trans" value="true"/> 
-             <property name="hibernate.show_sql" value="true"/>             
-        </properties>-->
-        
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/twitter"/>
