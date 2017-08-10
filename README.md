@@ -24,20 +24,12 @@ Vá na aba `Keys and Access Tokens` e busque pelas chaves
 
 ## Requirement & Installation
 
-- WebLaF - Java Look and Feel no site:
-
-Para compitar o projeto é preciso baixar a versão completa da biblioteca 
+- WebLaF - Java Look and Feel no site
 [http://weblookandfeel.com/](http://weblookandfeel.com/)
-
-
-ou no link direto
-[http://weblookandfeel.com/downloads/prerelease/weblaf-complete-1.29.jar](http://weblookandfeel.com/downloads/prerelease/weblaf-complete-1.29.jar)
-
-
-proximo passo é configurar o dependência weblaf manualmente apontando o arquivo .jar acima
+- Twitter4J
+[http://twitter4j.org/en/index.html](http://twitter4j.org/en/index.html)
 
 - SimpleRepository:
+Criei esse projeto baseado no tutorial [http://www.lestard.eu/2015/generic_repository_part1/](http://www.lestard.eu/2015/generic_repository_part1/)
 
-Criei esse projeto baseado no [http://www.lestard.eu/2015/generic_repository_part1/](http://www.lestard.eu/2015/generic_repository_part1/)
-
-Então baixem ele do repositório [https://github.com/krismorte/SimpleRepository](https://github.com/krismorte/SimpleRepository)
+A biblioteca já esta no projeto, mas caso queria ver o código segue o link [https://github.com/krismorte/SimpleRepository](https://github.com/krismorte/SimpleRepository)
