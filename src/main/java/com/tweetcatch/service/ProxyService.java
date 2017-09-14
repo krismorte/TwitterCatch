@@ -5,11 +5,10 @@
  */
 package com.tweetcatch.service;
 
+import com.tweetcatch.dao.AuditRule;
+import com.tweetcatch.dao.ProxyDao;
 import com.tweetcatch.model.Proxy;
-import com.tweetcatch.repository.ProxyRepository;
-import java.util.List;
-//import java.util.Set;
-//import java.util.function.Predicate;
+
 
 /**
  *
@@ -17,26 +16,29 @@ import java.util.List;
  */
 public class ProxyService {
 
-    private ProxyRepository repository = new ProxyRepository();
+    //private ProxyRepository repository = new ProxyRepository();
+    private ProxyDao proxyDao = new ProxyDao();
 
     public boolean save(Proxy proxy) {
-        repository.audit(proxy);
-        repository.persist(proxy);
+        //repository.audit(proxy);
+        //repository.persist(proxy);
+        AuditRule.audit(proxy);
+        proxyDao.beginTransaction();
+        proxyDao.save(proxy);
+        proxyDao.commitAndCloseTransaction();
         return true;
     }
 
     public static void configure() {
-        ProxyRepository repositoryLocal = new ProxyRepository();
+        ProxyDao proxyDaoLocal = new ProxyDao();
 
-        //Predicate activePredicate = (s) -> s.getActive();
-        
-        //Set<Proxy> proxies = repositoryLocal.get(activePredicate);
-        List<Proxy> proxies = repositoryLocal.getActive();
-
-        if (!proxies.isEmpty()) {
-            Proxy activeProxy = proxies.iterator().next();
-            activeProxy.configure();
+        proxyDaoLocal.beginTransaction();
+        Proxy proxy = proxyDaoLocal.getActive();
+        proxyDaoLocal.commitAndCloseTransaction();
+        if (proxy != null) {
+            proxy.configure();
         }
+
     }
 
 }

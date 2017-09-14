@@ -6,18 +6,24 @@
 package com.tweetcatch.view.swing;
 
 import com.tweetcatch.model.TwitterAccount;
+import com.tweetcatch.model.TwitterAccountAccess;
 import com.tweetcatch.service.TwitterAccountService;
+import com.tweetcatch.view.util.JPanelImage;
 import com.tweetcatch.view.util.ScreenUtil;
+import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author c007329
  */
-public class ManagerAccount extends javax.swing.JDialog{
+public class ManagerAccount extends javax.swing.JDialog {
 
     private TwitterAccountService twitterAccountService = new TwitterAccountService();
     private ScreenUtil screenUtil = new ScreenUtil();
+    private Collection<TwitterAccount> twitterAccounts;
+    private TwitterAccount twitterAccountSelected;
 
     /**
      * Creates new form ManagerAccount
@@ -25,7 +31,15 @@ public class ManagerAccount extends javax.swing.JDialog{
     public ManagerAccount(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setTitle("Account Manager");
         setIconImage(screenUtil.getImage("/image/if_twittert_278410.png"));
+        initBox();
+    }
+
+    private void initBox() {
+        boxAccounts.removeAllItems();
+        twitterAccounts = twitterAccountService.getAccounts();
+        twitterAccounts.forEach(twitterAccount -> boxAccounts.addItem(twitterAccount.getProfileName()));
     }
 
     /**
@@ -40,12 +54,12 @@ public class ManagerAccount extends javax.swing.JDialog{
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         txtEmail = new javax.swing.JTextField();
-        jPanel1 = new javax.swing.JPanel();
+        panelImage = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtProfile = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnSalve = new javax.swing.JButton();
-        btnLogin = new javax.swing.JButton();
+        btnLoad = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txtConsumerKey = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -54,24 +68,37 @@ public class ManagerAccount extends javax.swing.JDialog{
         txtConsumerSecret = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtAccessTokenSecret = new javax.swing.JTextField();
+        boxAccounts = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        labFriends = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        labFollowers = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        labId = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        labSince = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txtEmail.setEditable(false);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelImage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout panelImageLayout = new javax.swing.GroupLayout(panelImage);
+        panelImage.setLayout(panelImageLayout);
+        panelImageLayout.setHorizontalGroup(
+            panelImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 100, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelImageLayout.setVerticalGroup(
+            panelImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
         jLabel1.setText("Profile Name:");
+
+        txtProfile.setEditable(false);
 
         jLabel2.setText("Email:");
 
@@ -83,11 +110,11 @@ public class ManagerAccount extends javax.swing.JDialog{
             }
         });
 
-        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/if_login_173049.png"))); // NOI18N
-        btnLogin.setToolTipText("test login");
-        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+        btnLoad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/if_login_173049.png"))); // NOI18N
+        btnLoad.setToolTipText("load information");
+        btnLoad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoginActionPerformed(evt);
+                btnLoadActionPerformed(evt);
             }
         });
 
@@ -99,32 +126,58 @@ public class ManagerAccount extends javax.swing.JDialog{
 
         jLabel6.setText("Access TokenSecret:");
 
+        jLabel7.setText("Friends:");
+
+        labFriends.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labFriends.setText("0");
+
+        jLabel9.setText("Followers:");
+
+        labFollowers.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labFollowers.setText("0");
+
+        jLabel8.setText("Twitter ID:");
+
+        labId.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labId.setText("0");
+
+        jLabel10.setText("Since:");
+
+        labSince.setText(" ");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel2))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(txtProfile)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnSalve, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                                    .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                                    .addComponent(txtProfile)))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labFriends, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labFollowers, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(46, 46, 46))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtAccessToken)
@@ -137,30 +190,55 @@ public class ManagerAccount extends javax.swing.JDialog{
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel6))
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txtConsumerSecret))))
+                            .addComponent(txtConsumerSecret)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(boxAccounts, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labSince, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalve, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(boxAccounts, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSalve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLoad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel10)
+                        .addComponent(labSince)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnSalve)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel1)
-                                .addComponent(txtProfile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(4, 4, 4)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(txtProfile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(37, 37, 37)
-                        .addComponent(btnLogin)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel8)
+                                .addComponent(labId))
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel7)
+                                .addComponent(labFriends)
+                                .addComponent(jLabel9)
+                                .addComponent(labFollowers)))))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtAccessToken, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -176,7 +254,7 @@ public class ManagerAccount extends javax.swing.JDialog{
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtConsumerSecret, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Edit", jPanel4);
@@ -189,7 +267,7 @@ public class ManagerAccount extends javax.swing.JDialog{
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 348, Short.MAX_VALUE)
+            .addGap(0, 406, Short.MAX_VALUE)
         );
 
         jTabbedPane2.addTab("List", jPanel5);
@@ -209,33 +287,62 @@ public class ManagerAccount extends javax.swing.JDialog{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalveActionPerformed
-
-        TwitterAccount account = new TwitterAccount();
-        account.setProfileName(txtProfile.getText());
-        account.setEmail(txtEmail.getText());
-        account.setAccessToken(txtAccessToken.getText());
-        account.setAccessTokenSecret(txtAccessTokenSecret.getText());
-        account.setConsumerKey(txtConsumerKey.getText());
-        account.setConsumerSecret(txtConsumerSecret.getText());
         try {
-            twitterAccountService.save(account);
-            JOptionPane.showMessageDialog(rootPane, "Saved successfully");
-            screenUtil.clearSwing(this);
+            if (twitterAccountSelected == null) {
+
+                if (txtAccessToken.getText().equals("") || txtAccessTokenSecret.getText().equals("") || txtConsumerKey.getText().equals("") || txtConsumerSecret.getText().equals("")) {
+                    JOptionPane.showMessageDialog(rootPane, "To create a new Account set the Four Tokens.\nSee mote at https://apps.twitter.com/");
+                    return;
+                }
+
+                TwitterAccount account = twitterAccountService.save(txtAccessToken.getText(), txtAccessTokenSecret.getText(), txtConsumerKey.getText(), txtConsumerSecret.getText());
+                showInfo(account);
+                JOptionPane.showMessageDialog(rootPane, "Saved successfully");
+                screenUtil.clearSwing(this);
+                initBox();
+            } else {
+                twitterAccountService.updateFromTwitter(twitterAccountSelected);
+                showInfo(twitterAccountSelected);
+                JOptionPane.showMessageDialog(rootPane, "Loaded info successfully");
+            }
         } catch (Exception ex) {
+            ex.printStackTrace();
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
-
     }//GEN-LAST:event_btnSalveActionPerformed
 
-    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+    private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
+        twitterAccountSelected = getChooseTwitterAccount();
+        showInfo(twitterAccountSelected);
+    }//GEN-LAST:event_btnLoadActionPerformed
 
-        if (twitterAccountService.testConnection(txtConsumerKey.getText(), txtConsumerSecret.getText(), txtAccessToken.getText(), txtAccessTokenSecret.getText())) {
-            JOptionPane.showMessageDialog(rootPane, "Connection Success!");
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Connection Fail!");
+    private void showInfo(TwitterAccount account) {
+        txtProfile.setText(account.getProfileName());
+        txtEmail.setText(account.getEmail());
+        labId.setText("" + account.getProfileId());
+        labFriends.setText("" + account.getTotalFriends());
+        labFollowers.setText("" + account.getTotalFollowers());
+        labSince.setText(account.getCreateTime().format(DateTimeFormatter.ISO_DATE));
+
+        JPanelImage.show(panelImage, account.getProfileImage());
+
+        TwitterAccountAccess access = (TwitterAccountAccess) account.getAccountAccess();
+        txtAccessToken.setText(access.getAccessToken());
+        txtAccessTokenSecret.setText(access.getAccessTokenSecret());
+        txtConsumerKey.setText(access.getConsumerKey());
+        txtConsumerSecret.setText(access.getConsumerSecret());
+    }
+
+    private TwitterAccount getChooseTwitterAccount() {
+        TwitterAccount account = null;
+        for (TwitterAccount a : twitterAccounts) {
+            if (a.getProfileName().equals(boxAccounts.getSelectedItem().toString())) {
+                account = a;
+                break;
+            }
         }
-
-    }//GEN-LAST:event_btnLoginActionPerformed
+        return account;
+    }
 
     /**
      * @param args the command line arguments
@@ -280,18 +387,27 @@ public class ManagerAccount extends javax.swing.JDialog{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLogin;
+    private javax.swing.JComboBox<String> boxAccounts;
+    private javax.swing.JButton btnLoad;
     private javax.swing.JButton btnSalve;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JLabel labFollowers;
+    private javax.swing.JLabel labFriends;
+    private javax.swing.JLabel labId;
+    private javax.swing.JLabel labSince;
+    private javax.swing.JPanel panelImage;
     private javax.swing.JTextField txtAccessToken;
     private javax.swing.JTextField txtAccessTokenSecret;
     private javax.swing.JTextField txtConsumerKey;

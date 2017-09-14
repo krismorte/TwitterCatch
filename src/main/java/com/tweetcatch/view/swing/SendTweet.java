@@ -6,10 +6,17 @@
 package com.tweetcatch.view.swing;
 
 import com.tweetcatch.model.TwitterAccount;
-import com.tweetcatch.service.TweetSaveService;
+import com.tweetcatch.service.TweetService;
+import com.tweetcatch.view.swing.dnd.DNDImagePanel;
+import com.tweetcatch.view.swing.dnd.DNDSupport;
 import com.tweetcatch.view.util.ScreenUtil;
-import java.time.LocalDateTime;
+import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,9 +25,10 @@ import javax.swing.JOptionPane;
  */
 public class SendTweet extends javax.swing.JDialog {
 
-    private TweetSaveService tweetSaveService = new TweetSaveService();
-    private Collection<TwitterAccount> twitterAccounts;
+    private TweetService tweetService = new TweetService();
+    private List<TwitterAccount> twitterAccounts;
     private ScreenUtil screenUtil = new ScreenUtil();
+    private List<DNDImagePanel> panels = new ArrayList<>();
 
     /**
      * Creates new form ManagerTweet
@@ -29,23 +37,79 @@ public class SendTweet extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setIconImage(screenUtil.getImage("/image/if_Twitter_UI-15_2310210.png"));
+        initParam();
         initBox();
+        initPanelImages();
+        this.pack();
+    }
+
+    private void initParam() {
+        txtText.grabFocus();
+        twitterAccounts = tweetService.getAccounts();
+        if (twitterAccounts.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "You can't tweet, yet. You need registry a valid Twitter account.");
+            btnSaveAndSend.setEnabled(false);
+        } else {
+            tweetService.setAccount(twitterAccounts.get(0));
+        }
+    }
+
+    private void initPanelImages() {
+        panelImages.setLayout(new GridLayout(2, 2));
+        panelImages.setOpaque(false);
+        panelImages.add(getDNDImagePane("image 1"));
+        panelImages.add(getDNDImagePane("image 2"));
+        panelImages.add(getDNDImagePane("image 3"));
+        panelImages.add(getDNDImagePane("image 4"));
+
+        DNDSupport bDNDSupport = new DNDSupport(this, panelImages);
+        panelImages.addMouseListener(bDNDSupport);
+        panelImages.addMouseMotionListener(bDNDSupport);
     }
 
     private void initBox() {
-        twitterAccounts = tweetSaveService.getAccounts();
-        twitterAccounts.forEach(twitterAccount -> boxAccount.addItem(twitterAccount.getProfileName()));
+        twitterAccounts.forEach(twitterAccount -> boxAccounts.addItem(twitterAccount.getProfileName()));
+
+        boxAccounts.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    tweetService.setAccount(getChooseTwitterAccount());
+                }
+            }
+        });
     }
 
     private TwitterAccount getChooseTwitterAccount() {
         TwitterAccount account = null;
         for (TwitterAccount a : twitterAccounts) {
-            if (a.getProfileName().equals(boxAccount.getSelectedItem().toString())) {
+            if (a.getProfileName().equals(boxAccounts.getSelectedItem().toString())) {
                 account = a;
                 break;
             }
         }
         return account;
+    }
+
+    private DNDImagePanel getDNDImagePane(String title) {
+        DNDImagePanel pane1 = new DNDImagePanel(title);
+        panels.add(pane1);
+        return pane1;
+    }
+
+    private List<File> getImages() {
+        List<File> files = new ArrayList<>();
+        for (DNDImagePanel panel : panels) {
+            if (panel.getImage() != null) {
+                files.add(panel.getImage());
+            }
+        }
+
+        if (files.isEmpty()) {
+            return null;
+        } else {
+            return files;
+        }
     }
 
     /**
@@ -58,14 +122,15 @@ public class SendTweet extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        boxAccount = new javax.swing.JComboBox<>();
+        boxAccounts = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtText = new javax.swing.JTextArea();
         btnSaveAndSend = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        panelImages = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Send Tweet");
 
         jLabel1.setText("Twitter Account:");
 
@@ -83,61 +148,67 @@ public class SendTweet extends javax.swing.JDialog {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/if_calendar_1814093 (1).png"))); // NOI18N
-        jButton1.setToolTipText("schedule");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        panelImages.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout panelImagesLayout = new javax.swing.GroupLayout(panelImages);
+        panelImages.setLayout(panelImagesLayout);
+        panelImagesLayout.setHorizontalGroup(
+            panelImagesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panelImagesLayout.setVerticalGroup(
+            panelImagesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 257, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelImages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(boxAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSaveAndSend, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(boxAccounts, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
+                        .addComponent(btnSaveAndSend, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(boxAccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnSaveAndSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(boxAccounts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSaveAndSend))
                 .addGap(10, 10, 10)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelImages, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveAndSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveAndSendActionPerformed
-        TwitterAccount account = getChooseTwitterAccount();
+        //TwitterAccount account = getChooseTwitterAccount();
         try {
-            tweetSaveService.sendSimpleTweet(account, txtText.getText());
-            JOptionPane.showMessageDialog(rootPane, "Sended Tweet successfully");
-            screenUtil.clearSwing(this);
+            List<File> images = getImages();
+            tweetService.sendSimpleTweet(txtText.getText(), images);
+            JOptionPane.showMessageDialog(rootPane, "Sended Tweet successfully"); 
+            clear();
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
@@ -145,18 +216,20 @@ public class SendTweet extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btnSaveAndSendActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        TwitterAccount account = getChooseTwitterAccount();
-        LocalDateTime dateTime = ChooseDateTime.showAndChoose();
-        try {
-            tweetSaveService.saveScheduleTweet(account, dateTime, txtText.getText());
-            JOptionPane.showMessageDialog(rootPane, "Schedule Tweet successfully");
-            screenUtil.clearSwing(this);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+    private void clear() {
+        txtText.setText("");
+        clearImages();
+        //panels.clear();
+        //panelImages.removeAll();
+        //panelImages.repaint();
+        txtText.grabFocus();
+    }
+
+    private void clearImages() {
+        for (DNDImagePanel panel : panels) {
+            panel.clear();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
 
     /**
      * @param args the command line arguments
@@ -202,12 +275,12 @@ public class SendTweet extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> boxAccount;
+    private javax.swing.JComboBox<String> boxAccounts;
     private javax.swing.JButton btnSaveAndSend;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel panelImages;
     private javax.swing.JTextArea txtText;
     // End of variables declaration//GEN-END:variables
 
