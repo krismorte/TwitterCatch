@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
+import twitter4j.TwitterException;
 import twitter4j.api.HelpResources;
 
 /**
@@ -63,6 +64,8 @@ public class RetweetScreen extends javax.swing.JDialog {
             twitterUsers = reTweetService.getUsers();
             try {
                 languages = reTweetService.getLanguages();
+            } catch (TwitterException tEx) {
+                JOptionPane.showMessageDialog(null, tEx.getErrorMessage());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
